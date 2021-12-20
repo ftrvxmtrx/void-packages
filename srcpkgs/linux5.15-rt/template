@@ -1,8 +1,8 @@
 # Template file for 'linux5.15-rt'
 pkgname=linux5.15-rt
-version=5.15.6
+version=5.15.10
 revision=1
-rt=22
+rt=24
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series with RT patchset (${rt}))"
 maintainer="Sigrid <ftrvxmtrx@gmail.com>"
@@ -10,10 +10,10 @@ license="GPL-2.0-only"
 homepage="https://www.kernel.org"
 distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
  https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz
- https://cdn.kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15.5-rt${rt}.patch.xz"
+ https://cdn.kernel.org/pub/linux/kernel/projects/rt/${version%.*}/patch-${version}-rt${rt}.patch.xz"
 checksum="57b2cf6991910e3b67a1b3490022e8a0674b6965c74c12da1e99d138d1991ee8
- 23f5753121e2f18ef757449f94728d18ba70a20728dd217a53d4fa0a1cde621e
- d73857a57d6d64e559bd9f54c46e9b22d7c6fd1e199b01004fce0ea780421b2d"
+ bdb35ece2dd0f6d8225947b63539e70c8fc16bd28f03395d590515d8187f03c4
+ b660742ea01901f2d8aa14bd2a3d9615a8985457170efd197f90cb5ebbe34580"
 skip_extraction="patch-${version}.xz
   patch-${version}-rt${rt}.patch.xz"
 python_version=3
@@ -58,7 +58,7 @@ fi
 
 pre_patch() {
 	xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-${version}.xz | patch -Np1
-	xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-5.15.5-rt${rt}.patch.xz | patch -Np1
+	xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-${version}-rt${rt}.patch.xz | patch -Np1
 }
 
 do_configure() {
