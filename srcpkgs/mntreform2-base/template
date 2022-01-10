@@ -1,0 +1,16 @@
+# Template file for 'mntreform2-base'
+pkgname=mntreform2-base
+version=0.1
+revision=1
+archs="aarch64*"
+build_style=meta
+depends="mntreform2-kernel mntreform2-uboot dracut"
+short_desc="Void Linux MNT Reform 2 platform package"
+maintainer="Sigrid Solveig Haflaínudóttir <ftrvxmtrx@gmail.com>"
+license="Public Domain"
+homepage="https://www.voidlinux.org"
+mutable_files="/var/lib/alsa/asound.state"
+
+do_install() {
+	vinstall "${FILESDIR}/asound.state" 644 var/lib/alsa
+}
