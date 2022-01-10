@@ -1,0 +1,28 @@
+#!/bin/sh
+
+kver=${2}
+uuid=$(cat /etc/fstab | awk '$2 == "/" { print $1 }' | sed 's/^UUID=//')
+dev=$(blkid -U "${uuid}")
+partuuid=$(blkid -o value -s PARTUUID "${dev}")
+bootpart=$(df -P /boot | tail -1 | awk '{ print $6 }')
+bootstrip() {
+    echo ${1} | sed "s,^${bootpart}/,/,"
+}
+
+cat > /boot/boot.txt <<EOF
+part uuid \${devtype} \${devnum}:\${bootpart} uuid
+setenv bootargs console=ttymxc0,115200 console=tty1 root=PARTUUID=${partuuid} rootwait cma=512M pci=nomsi loglevel=4
+setenv fdtfile freescale/imx8mq-mnt-reform2.dtb
+
+if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} $(bootstrip /boot/vmlinux-${kver}); then
+  if load \${devtype} \${devnum}:\${bootpart} \${fdt_addr} $(bootstrip /boot/dtbs/dtbs-${kver}/\${fdtfile}); then
+    if load \${devtype} \${devnum}:\${bootpart} \${ramdisk_addr} $(bootstrip /boot/initramfs-${kver}.img); then
+      booti \${loadaddr} \${ramdisk_addr}:\${filesize} \${fdt_addr};
+    else
+      booti \${loadaddr} - \${fdt_addr};
+    fi;
+  fi;
+fi
+EOF
+
+exec mkimage -A arm -O linux -T script -C none -n "U-Boot boot script" -d /boot/boot.txt /boot/boot.scr
