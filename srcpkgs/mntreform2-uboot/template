@@ -1,0 +1,51 @@
+# Template file for 'mntreform2-uboot'
+pkgname=mntreform2-uboot
+version=202106
+revision=1
+archs="aarch64*"
+wrksrc="u-boot-${version}"
+hostmakedepends="tar bzip2 flex bc dtc python3"
+depends="u-boot-tools"
+short_desc="U-Boot for MNT Reform 2"
+maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
+license="GPL-2.0-only, BSD-3-Clause"
+homepage="https://www.denx.de/wiki/U-Boot/"
+distfiles="https://source.mnt.re/reform/reform-boundary-uboot/-/archive/master/reform-boundary-uboot-master.tar.bz2?sha=bdcdce74"
+checksum=5d00cd71559b507e6d8c92773d38c73f4e9871a22f23a88d21ccc7baf69c40f3
+
+do_extract() {
+	tar xf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${distfiles##*/}"
+	mv reform-boundary-uboot-master/* .
+}
+
+do_configure() {
+	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+	cp mntreform-config .config
+}
+
+do_build() {
+	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+	if [ "$CROSS_BUILD" ]; then
+		export CROSS_COMPILE=${XBPS_CROSS_TRIPLET}-
+	fi
+	make ${makejobs} EXTRAVERSION=-${revision} flash.bin
+}
+
+do_install() {
+	vinstall flash.bin 0644 usr/lib/mntreform2-uboot u-boot.bin
+        vinstall "${FILESDIR}/kernel.d/uboot" 750 \
+                etc/kernel.d/post-install 60-uboot
+
+	vlicense Licenses/Exceptions
+	vlicense Licenses/OFL.txt
+	vlicense Licenses/README
+	vlicense Licenses/bsd-2-clause.txt
+	vlicense Licenses/bsd-3-clause.txt
+	vlicense Licenses/eCos-2.0.txt
+	vlicense Licenses/gpl-2.0.txt
+	vlicense Licenses/ibm-pibs.txt
+	vlicense Licenses/isc.txt
+	vlicense Licenses/lgpl-2.0.txt
+	vlicense Licenses/lgpl-2.1.txt
+	vlicense Licenses/x11.txt
+}
