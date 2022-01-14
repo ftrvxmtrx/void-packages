@@ -24,8 +24,8 @@ index 89ebf8e08b..7d5556f8e3 100644
 +	env_set("script", "boot.scr");
 +	env_set("bootcmd",
 +		"${devtype} dev ${devnum}; "
-+		"if mmc rescan; then "
-+			"fatload ${devtype} ${devnum}:${bootpart} ${loadaddr} ${script}; "
++		"if ${devtype} rescan; then "
++			"load ${devtype} ${devnum}:${bootpart} ${loadaddr} ${script}; "
 +			"source; "
 +		"fi"
 +	);
