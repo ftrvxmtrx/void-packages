@@ -1,13 +1,16 @@
 pkgname=mntreform2-kernel
-version=5.12
+version=5.15.16
 revision=1
-wrksrc="linux-${version}"
+wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) for MNT Reform 2"
-maintainer="Sigrid <ftrvxmtrx@gmail.com>"
+maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
-distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version}.tar.xz"
-checksum=7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366
+distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
+ https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
+checksum="57b2cf6991910e3b67a1b3490022e8a0674b6965c74c12da1e99d138d1991ee8
+ 0817171996521675b3c1130568503f08d8b1672c955cc842200a21bf5914cd95"
+skip_extraction="patch-${version}.xz"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
@@ -22,7 +25,7 @@ preserve=yes
 hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
  openssl-devel perl uboot-mkimage cpio pahole python3"
 
-_kernver="${version}.0_${revision}"
+_kernver="${version}_${revision}"
 triggers="kernel-hooks"
 kernel_hooks_version="${_kernver}"
 
@@ -50,6 +53,11 @@ fi
 if [ "${_patchver}" ]; then
 	_version="EXTRAVERSION=${_patchver}"
 fi
+
+pre_patch() {
+	xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-${version}.xz | patch -Np1
+	cp "${FILESDIR}"/*.dts arch/arm64/boot/dts/freescale/
+}
 
 do_configure() {
         cp -a $FILESDIR/DocBook -t Documentation
