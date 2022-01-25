@@ -1,8 +1,8 @@
 diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 80fc98acf..88ef81d55 100644
+index 6974bd5aa..0346860eb 100644
 --- a/drivers/pci/controller/dwc/pci-imx6.c
 +++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -65,6 +65,7 @@ struct imx6_pcie {
+@@ -67,6 +67,7 @@ struct imx6_pcie {
  	struct dw_pcie		*pci;
  	int			reset_gpio;
  	bool			gpio_active_high;
@@ -10,8 +10,8 @@ index 80fc98acf..88ef81d55 100644
  	struct clk		*pcie_bus;
  	struct clk		*pcie_phy;
  	struct clk		*pcie_inbound_axi;
-@@ -611,18 +612,52 @@ static void imx6_pcie_configure_type(struct imx6_pcie *imx6_pcie)
- 	regmap_update_bits(imx6_pcie->iomuxc_gpr, IOMUXC_GPR12, mask, val);
+@@ -616,6 +617,40 @@ static void imx6_pcie_deassert_core_reset(struct imx6_pcie *imx6_pcie)
+ 	}
  }
  
 +#define IMX8MQ_ANA_PLLOUT_REG			0x74
@@ -48,27 +48,30 @@ index 80fc98acf..88ef81d55 100644
 +	usleep_range(9000,10000);
 +}
 +
+ static void imx6_pcie_configure_type(struct imx6_pcie *imx6_pcie)
+ {
+ 	unsigned int mask, val;
+@@ -636,6 +671,9 @@ static void imx6_pcie_configure_type(struct imx6_pcie *imx6_pcie)
+ 
  static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
  {
-+  if (imx6_pcie->internal_refclk)
++	if (imx6_pcie->internal_refclk)
 +		imx6_pcie_enable_internal_refclk();
 +
  	switch (imx6_pcie->drvdata->variant) {
- 	case IMX8MQ:
--		/*
--		 * TODO: Currently this code assumes external
--		 * oscillator is being used
--		 */
+ 	case IMX8MM:
+ 		/*
+@@ -651,7 +689,8 @@ static void imx6_pcie_init_phy(struct imx6_pcie *imx6_pcie)
  		regmap_update_bits(imx6_pcie->iomuxc_gpr,
  				   imx6_pcie_grp_offset(imx6_pcie),
  				   IMX8MQ_GPR_PCIE_REF_USE_PAD,
 -				   IMX8MQ_GPR_PCIE_REF_USE_PAD);
 +				   (imx6_pcie->internal_refclk ?
-+				    0 : IMX8MQ_GPR_PCIE_REF_USE_PAD));
++						0 : IMX8MQ_GPR_PCIE_REF_USE_PAD));
  		/*
  		 * Regarding the datasheet, the PCIE_VPH is suggested
  		 * to be 1.8V. If the PCIE_VPH is supplied by 3.3V, the
-@@ -1070,7 +1105,8 @@ static int imx6_pcie_probe(struct platform_device *pdev)
+@@ -1105,7 +1144,8 @@ static int imx6_pcie_probe(struct platform_device *pdev)
  		imx6_pcie->pcie_aux = devm_clk_get(dev, "pcie_aux");
  		if (IS_ERR(imx6_pcie->pcie_aux))
  			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
