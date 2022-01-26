@@ -1,6 +1,6 @@
 # Template file for 'mntreform2-uboot'
 pkgname=mntreform2-uboot
-version=202106
+version=201807
 revision=1
 archs="aarch64*"
 wrksrc="u-boot-${version}"
@@ -11,7 +11,7 @@ maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only, BSD-3-Clause"
 homepage="https://www.denx.de/wiki/U-Boot/"
 distfiles="https://source.mnt.re/reform/reform-boundary-uboot/-/archive/master/reform-boundary-uboot-master.tar.bz2?sha=bdcdce74"
-checksum=5d00cd71559b507e6d8c92773d38c73f4e9871a22f23a88d21ccc7baf69c40f3
+checksum=f3b77bd1a0620a729b132bbdf81d45d55043ba4b29eb6e87415cd8f704b3e437
 
 do_extract() {
 	tar xf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${distfiles##*/}"
