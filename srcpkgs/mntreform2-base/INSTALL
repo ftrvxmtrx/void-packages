@@ -6,9 +6,7 @@ post)
         cat >>/etc/rc.local <<_EOF
 
 # Enable wakeup from suspend on all UARTs
-echo enabled > /sys/devices/platform/soc@0/30800000.bus/30860000.serial/tty/ttymxc0/power/wakeup
-echo enabled > /sys/devices/platform/soc@0/30800000.bus/30890000.serial/tty/ttymxc1/power/wakeup
-echo enabled > /sys/devices/platform/soc@0/30800000.bus/30880000.serial/tty/ttymxc2/power/wakeup
+for w in /sys/class/tty/ttymxc*/power/wakeup; do echo enabled >$w; done
 _EOF
 	;;
 esac
