@@ -9,10 +9,29 @@ post)
 for w in /sys/class/tty/ttymxc*/power/wakeup; do echo enabled >$w; done
 _EOF
 
-	cat >/etc/zzz.d/resume/00-reset-wifi <<_EOF
+	cat >/etc/zzz.d/suspend/00-reform2 <<_EOF
 #!/bin/sh
-# ath9k gets stuck on resume. Force reset.
-echo 1 > /sys/bus/pci/devices/0000:01:00.0/reset 2>/dev/null
+
+# wlan
+rfkill block all
+
+# keyboard and pointer
+echo 0003:03EB:2041.0002 >/sys/bus/hid/drivers/hid-generic/unbind
+echo 0003:03EB:2042.0001 >/sys/bus/hid/drivers/hid-generic/unbind
 _EOF
+	chmod +x /etc/zzz.d/suspend/00-reform2
+
+	cat >/etc/zzz.d/resume/00-reform2 <<_EOF
+#!/bin/sh
+
+# wlan - ath9k has to be reset
+echo 1 >/sys/bus/pci/drivers/ath9k/0000:01:00.0/reset
+sudo rfkill unblock all
+
+# keyboard and pointer
+echo 0003:03EB:2041.0002 >/sys/bus/hid/drivers/hid-generic/bind
+echo 0003:03EB:2042.0001 >/sys/bus/hid/drivers/hid-generic/bind
+_EOF
+	chmod +x /etc/zzz.d/resume/00-reform2
 	;;
 esac
