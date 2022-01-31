@@ -12,7 +12,12 @@ bootstrip() {
 cat > /boot/boot.txt <<EOF
 part uuid \${devtype} \${devnum}:\${bootpart} uuid
 setenv bootargs console=ttymxc0,115200 console=tty1 root=PARTUUID=${partuuid} rootwait cma=512M pci=nomsi no_console_suspend loglevel=4
-setenv fdtfile freescale/imx8mq-mnt-reform2.dtb
+
+if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} /boot/disable_hdmi; then
+	setenv fdtfile freescale/imx8mq-mnt-reform2-no-hdmi.dtb
+else
+	setenv fdtfile freescale/imx8mq-mnt-reform2.dtb
+fi
 
 if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} $(bootstrip /boot/vmlinux-${kver}); then
   if load \${devtype} \${devnum}:\${bootpart} \${fdt_addr} $(bootstrip /boot/dtbs/dtbs-${kver}/\${fdtfile}); then
