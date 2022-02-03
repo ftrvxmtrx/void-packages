@@ -166,6 +166,7 @@ do_install() {
 
 	mkdir -p ${hdrdest}/arch/${arch}/kernel
 	cp arch/${arch}/Makefile ${hdrdest}/arch/${arch}
+	cp -a arch/${arch}/tools ${hdrdest}/arch/${arch}
 	if [ "$arch" = "arm64" ]; then
 		mkdir -p ${hdrdest}/arch/arm64/kernel
 		cp -a arch/arm64/kernel/vdso ${hdrdest}/arch/arm64/kernel/
