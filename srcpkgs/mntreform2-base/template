@@ -13,5 +13,6 @@ mutable_files="/var/lib/alsa/asound.state"
 
 do_install() {
 	vinstall "${FILESDIR}/asound.state" 644 var/lib/alsa
-	vcopy "${FILESDIR}/zzz.d/*" etc/zzz.d
+	vmkdir etc/zzz.d
+	vcopy "${FILESDIR}/zzz.d" etc/
 }
