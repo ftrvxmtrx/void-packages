@@ -3,7 +3,7 @@ post)
 	mkdir -p etc/runit/runsvdir/default/
 	ln -sf /etc/sv/sshd etc/runit/runsvdir/default/
 	ln -sf /etc/sv/dhcpcd etc/runit/runsvdir/default/
-        cat >>/etc/rc.local <<_EOF
+        cat >>/etc/rc.local <<'_EOF'
 
 # Enable wakeup from suspend on all UARTs
 for w in /sys/class/tty/ttymxc*/power/wakeup; do echo enabled >$w; done
