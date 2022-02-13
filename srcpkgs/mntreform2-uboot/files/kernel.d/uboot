@@ -13,7 +13,7 @@ cat > /boot/boot.txt <<EOF
 part uuid \${devtype} \${devnum}:\${bootpart} uuid
 setenv bootargs console=ttymxc0,115200 console=tty1 root=PARTUUID=${partuuid} rootwait cma=512M pci=nomsi no_console_suspend loglevel=4
 
-if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} /boot/disable_hdmi; then
+if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} $(bootstrip /boot/disable_hdmi); then
 	setenv fdtfile freescale/imx8mq-mnt-reform2-no-hdmi.dtb
 else
 	setenv fdtfile freescale/imx8mq-mnt-reform2.dtb
