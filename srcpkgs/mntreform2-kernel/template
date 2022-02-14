@@ -1,6 +1,7 @@
 pkgname=mntreform2-kernel
-version=5.17rc3
-_ver=5.17-rc3
+_rc=rc4
+version="5.17${_rc}"
+_ver="5.17-${_rc}"
 revision=1
 wrksrc="linux-${_ver}"
 short_desc="Linux kernel and modules (${_ver} series) for MNT Reform 2"
@@ -8,7 +9,7 @@ maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
 distfiles="https://git.kernel.org/torvalds/t/linux-${_ver}.tar.gz"
-checksum="21b7b7d87dab777dc0e27de99bd167797b774be08b594f384839e54fd62cc217"
+checksum="dbca1579759608c91e5ee2c9634bf523e9d1e344a925d5d861049e0e10b1887d"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
@@ -23,7 +24,7 @@ preserve=yes
 hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
  openssl-devel perl uboot-mkimage cpio pahole python3"
 
-_kernver="5.17.0-rc3_${revision}"
+_kernver="5.17.0-${_rc}_${revision}"
 triggers="kernel-hooks"
 kernel_hooks_version="${_kernver}"
 
