@@ -1,15 +1,19 @@
-pkgname=mntreform2-kernel
+pkgname=mntreform2-kernel-rt
 _rc=rc4
+_rt=rt7
 version="5.17${_rc}"
 _ver="5.17-${_rc}"
+_rtpatches="linux-rt-devel-${_ver}-${_rt}-patches"
 revision=1
 wrksrc="linux-${_ver}"
-short_desc="Linux kernel and modules (${_ver} series) for MNT Reform 2"
+short_desc="Linux kernel and modules (${_ver} series) with RT patchset applied, for MNT Reform 2"
 maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
-distfiles="https://git.kernel.org/torvalds/t/linux-${_ver}.tar.gz"
-checksum="dbca1579759608c91e5ee2c9634bf523e9d1e344a925d5d861049e0e10b1887d"
+distfiles="https://git.kernel.org/torvalds/t/linux-${_ver}.tar.gz
+https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/snapshot/${_rtpatches}.tar.gz"
+checksum="dbca1579759608c91e5ee2c9634bf523e9d1e344a925d5d861049e0e10b1887d
+c6e855bc1b5d39c583afac789ff403dfba719c6b86efaf47217605e824cd7366"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
@@ -22,9 +26,9 @@ noshlibprovides=yes
 preserve=yes
 
 hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
- openssl-devel perl uboot-mkimage cpio pahole python3"
+ openssl-devel perl quilt uboot-mkimage cpio pahole python3"
 
-_kernver="5.17.0-${_rc}-rt4_${revision}"
+_kernver="5.17.0-${_rc}-${_rt}_${revision}"
 triggers="kernel-hooks"
 kernel_hooks_version="${_kernver}"
 
@@ -55,6 +59,7 @@ fi
 
 pre_patch() {
 	cp "${FILESDIR}"/*.dts arch/arm64/boot/dts/freescale/
+	QUILT_PATCHES="../${_rtpatches}/patches" quilt push -a
 }
 
 do_configure() {
@@ -255,7 +260,7 @@ do_install() {
 	# ... and run depmod again.
 	depmod -b ${DESTDIR}/usr -F System.map ${_kernver}
 }
-mntreform2-kernel-headers_package() {
+mntreform2-kernel-rt-headers_package() {
 	preserve=yes
 	nostrip=yes
 	noshlibprovides=yes
@@ -265,7 +270,7 @@ mntreform2-kernel-headers_package() {
 		vmove usr/lib/modules/${_kernver}/build
 	}
 }
-mntreform2-kernel-dbg_package() {
+mntreform2-kernel-rt-dbg_package() {
 	preserve=yes
 	nostrip=yes
 	noverifyrdeps=yes
