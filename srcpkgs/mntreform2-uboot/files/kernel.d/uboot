@@ -3,7 +3,7 @@
 kver=${2}
 bootpart=$(df -P /boot | tail -1 | awk '{ print $6 }')
 bootstrip() {
-    echo ${1} | sed "s,^${bootpart}/,/,"
+	echo ${1} | sed "s,^${bootpart}/,/,"
 }
 
 cat > /boot/boot.txt <<EOF
@@ -23,7 +23,6 @@ if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} $(bootstrip /boot/vmlin
 			setenv ramdisk -
 		fi
 		booti \${loadaddr} \${ramdisk} \${fdt_addr}
-		fi
 	fi
 fi
 EOF
