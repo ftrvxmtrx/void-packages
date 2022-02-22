@@ -1,6 +1,6 @@
 pkgname=mntreform2-kernel-rt
-_rc=rc4
-_rt=rt7
+_rc=rc5
+_rt=rt8
 version="5.17${_rc}"
 _ver="5.17-${_rc}"
 _rtpatches="linux-rt-devel-${_ver}-${_rt}-patches"
@@ -12,8 +12,8 @@ license="GPL-2.0-only"
 homepage="https://www.kernel.org"
 distfiles="https://git.kernel.org/torvalds/t/linux-${_ver}.tar.gz
 https://git.kernel.org/pub/scm/linux/kernel/git/rt/linux-rt-devel.git/snapshot/${_rtpatches}.tar.gz"
-checksum="dbca1579759608c91e5ee2c9634bf523e9d1e344a925d5d861049e0e10b1887d
-c6e855bc1b5d39c583afac789ff403dfba719c6b86efaf47217605e824cd7366"
+checksum="f58de0f77ae34aefb6fec5c4942251194db6fb6522f91d4554c4ab4dbda8c133
+2d565d6d41458762f5340d42bec8c9fca1057326130c89c3c6ecd711532e3962"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
