@@ -1,5 +1,5 @@
 pkgname=mntreform2-kernel
-_rc=rc4
+_rc=rc5
 version="5.17${_rc}"
 _ver="5.17-${_rc}"
 revision=1
@@ -9,7 +9,7 @@ maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
 distfiles="https://git.kernel.org/torvalds/t/linux-${_ver}.tar.gz"
-checksum="dbca1579759608c91e5ee2c9634bf523e9d1e344a925d5d861049e0e10b1887d"
+checksum="f58de0f77ae34aefb6fec5c4942251194db6fb6522f91d4554c4ab4dbda8c133"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
