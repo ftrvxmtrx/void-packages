@@ -7,7 +7,7 @@ bootstrip() {
 }
 
 cat > /boot/boot.txt <<EOF
-setenv bootargs console=ttymxc0,115200 console=tty1 cma=512M pci=nomsi no_console_suspend loglevel=4 $(dracut --print-cmdline)
+setenv bootargs console=ttymxc0,115200 console=tty1 cma=512M pci=nomsi no_console_suspend rootwait loglevel=4 $(dracut --print-cmdline)
 
 if load \${devtype} \${devnum}:\${bootpart} \${loadaddr} $(bootstrip /boot/disable_hdmi); then
 	setenv fdtfile freescale/imx8mq-mnt-reform2-no-hdmi.dtb
