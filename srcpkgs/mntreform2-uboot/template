@@ -1,22 +1,17 @@
 # Template file for 'mntreform2-uboot'
 pkgname=mntreform2-uboot
-version=201807
-revision=2
+version=3
+revision=1
 archs="aarch64*"
-wrksrc="u-boot-${version}"
+wrksrc="reform-boundary-uboot-v${version}"
 hostmakedepends="tar bzip2 flex bc dtc python3"
 depends="u-boot-tools"
 short_desc="U-Boot for MNT Reform 2"
 maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only, BSD-3-Clause"
 homepage="https://www.denx.de/wiki/U-Boot/"
-distfiles="https://source.mnt.re/reform/reform-boundary-uboot/-/archive/master/reform-boundary-uboot-master.tar.bz2?sha=154283ad"
-checksum=1c87d64045788b56f16f34b43797c601353c6e37fbc5c9225c7e1d2a3be26a93
-
-do_extract() {
-	tar xf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/${distfiles##*/}"
-	mv reform-boundary-uboot-master/* .
-}
+distfiles="https://source.mnt.re/reform/reform-boundary-uboot/-/archive/v3/reform-boundary-uboot-v3.tar.bz2"
+checksum=3c5a82dda3c2e04894eddd7216a73d59f1d5e33842a2cb3bcf495c755eb36e52
 
 do_configure() {
 	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
