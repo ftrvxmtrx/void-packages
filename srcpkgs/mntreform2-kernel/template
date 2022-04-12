@@ -1,15 +1,16 @@
 pkgname=mntreform2-kernel
-_rc=rc5
-version="5.17${_rc}"
-_ver="5.17-${_rc}"
+version="5.17.2"
 revision=1
-wrksrc="linux-${_ver}"
-short_desc="Linux kernel and modules (${_ver} series) for MNT Reform 2"
+wrksrc="linux-${version%.*}"
+short_desc="Linux kernel and modules (${version%.*} series) for MNT Reform 2"
 maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
-distfiles="https://git.kernel.org/torvalds/t/linux-${_ver}.tar.gz"
-checksum="f58de0f77ae34aefb6fec5c4942251194db6fb6522f91d4554c4ab4dbda8c133"
+distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
+ https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
+checksum="555fef61dddb591a83d62dd04e252792f9af4ba9ef14683f64840e46fa20b1b1
+ 7d21d9b8818421d52b94f5b74138677155e8f543fd29c39c22beefdb128d5967"
+skip_extraction="patch-${version}.xz"
 python_version=3
 
 # XXX Restrict archs until a proper <arch>-dotconfig is available in FILESDIR.
@@ -24,7 +25,7 @@ preserve=yes
 hostmakedepends="tar xz bc elfutils-devel flex gmp-devel kmod libmpc-devel
  openssl-devel perl uboot-mkimage cpio pahole python3"
 
-_kernver="5.17.0-${_rc}_${revision}"
+_kernver="${version}_${revision}"
 triggers="kernel-hooks"
 kernel_hooks_version="${_kernver}"
 
@@ -49,11 +50,9 @@ export KBUILD_BUILD_HOST=voidlinux
 if [ "$CROSS_BUILD" ]; then
 	_cross="CROSS_COMPILE=${XBPS_CROSS_TRIPLET}-"
 fi
-if [ "${_patchver}" ]; then
-	_version="EXTRAVERSION=${_patchver}"
-fi
 
 pre_patch() {
+	xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-${version}.xz | patch -Np1
 	cp "${FILESDIR}"/*.dts arch/arm64/boot/dts/freescale/
 }
 
