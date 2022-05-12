@@ -1,6 +1,6 @@
 # Template file for 'linux4.16'
 pkgname=linux5.17
-version=5.17.6
+version=5.17.7
 revision=1
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series)"
@@ -10,7 +10,7 @@ homepage="https://www.kernel.org"
 distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
  https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
 checksum="555fef61dddb591a83d62dd04e252792f9af4ba9ef14683f64840e46fa20b1b1
- 59d429643f4874cd24ed71c7d32881e3b337264b8d486c866703b3e96f9ae4cc"
+ 0757b5248e6f7f062d1f2ec2442510b52bb2acbcd94fe2f7d68a72087b8046b8"
 skip_extraction="patch-${version}.xz"
 python_version=3
 
