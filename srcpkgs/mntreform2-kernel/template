@@ -1,13 +1,15 @@
 pkgname=mntreform2-kernel
-version="5.18.0"
+version="5.18.3"
 revision=1
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) for MNT Reform 2"
 maintainer="Sigrid Solveig Haflínudóttir <ftrvxmtrx@gmail.com>"
 license="GPL-2.0-only"
 homepage="https://www.kernel.org"
-distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz"
-checksum="51f3f1684a896e797182a0907299cc1f0ff5e5b51dd9a55478ae63a409855cee"
+distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
+ https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
+checksum="51f3f1684a896e797182a0907299cc1f0ff5e5b51dd9a55478ae63a409855cee
+ 93fea9819fbeb863d11423e7e62266b1479e8df017834e554c21cea448e7b9b9"
 skip_extraction="patch-${version}.xz"
 python_version=3
 
@@ -50,7 +52,7 @@ if [ "$CROSS_BUILD" ]; then
 fi
 
 pre_patch() {
-	#xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-${version}.xz | patch -Np1
+	xzcat $XBPS_SRCDISTDIR/$pkgname-$version/patch-${version}.xz | patch -Np1
 	cp "${FILESDIR}"/*.dts arch/arm64/boot/dts/freescale/
 }
 
