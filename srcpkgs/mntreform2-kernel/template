@@ -1,5 +1,5 @@
 pkgname=mntreform2-kernel
-version="5.18.3"
+version="5.18.5"
 revision=1
 wrksrc="linux-${version%.*}"
 short_desc="Linux kernel and modules (${version%.*} series) for MNT Reform 2"
@@ -9,7 +9,7 @@ homepage="https://www.kernel.org"
 distfiles="https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${version%.*}.tar.xz
  https://cdn.kernel.org/pub/linux/kernel/v5.x/patch-${version}.xz"
 checksum="51f3f1684a896e797182a0907299cc1f0ff5e5b51dd9a55478ae63a409855cee
- 93fea9819fbeb863d11423e7e62266b1479e8df017834e554c21cea448e7b9b9"
+ fb0c52d5628f332ffe10ebaa1419c7518198f4ffe757e39c9a80229b480a36ca"
 skip_extraction="patch-${version}.xz"
 python_version=3
 
