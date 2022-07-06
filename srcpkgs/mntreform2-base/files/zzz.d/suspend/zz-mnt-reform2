@@ -6,3 +6,6 @@ rfkill block all
 # keyboard and pointer
 echo 0003:03EB:2041.0002 >/sys/bus/hid/drivers/hid-generic/unbind
 echo 0003:03EB:2042.0001 >/sys/bus/hid/drivers/hid-generic/unbind
+
+# in 5.18 hantro_vpu causes a hang - modprobe back on resume
+rmmod hantro_vpu 2>/dev/null

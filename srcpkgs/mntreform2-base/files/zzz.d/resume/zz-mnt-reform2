@@ -7,3 +7,6 @@ sudo rfkill unblock all
 # keyboard and pointer
 echo 0003:03EB:2041.0002 >/sys/bus/hid/drivers/hid-generic/bind
 echo 0003:03EB:2042.0001 >/sys/bus/hid/drivers/hid-generic/bind
+
+# in 5.18 hantro_vpu causes a hang - it was rmmod'ed on suspend
+modprobe hantro_vpu 2>/dev/null

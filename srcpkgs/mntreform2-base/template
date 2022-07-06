@@ -1,6 +1,6 @@
 # Template file for 'mntreform2-base'
 pkgname=mntreform2-base
-version=0.1
+version=0.2
 revision=1
 archs="aarch64*"
 build_style=meta
