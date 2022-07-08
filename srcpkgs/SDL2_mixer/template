@@ -1,29 +1,32 @@
 # Template file for 'SDL2_mixer'
 pkgname=SDL2_mixer
-version=2.0.4
-revision=4
+version=2.6.1
+revision=1
 build_style=gnu-configure
+configure_args="--disable-static --disable-music-ogg-stb
+ --enable-music-ogg-vorbis --disable-music-mod-modplug-shared
+ --disable-music-midi-fluidsynth-shared --disable-music-flac-drflac
+ --enable-music-flac-libflac --disable-music-flac-libflac-shared
+ --disable-music-ogg-vorbis-shared --disable-music-opus-shared"
 hostmakedepends="pkg-config"
-makedepends="SDL2-devel libvorbis-devel libmikmod-devel libflac-devel
- libmodplug-devel mpg123-devel smpeg2-devel fluidsynth-devel opusfile-devel"
-# The following deps are dlopen(3)ed at runtime.
-depends="libvorbis libmikmod libmpg123 libmodplug libflac smpeg2 opusfile"
+makedepends="SDL2-devel libmodplug-devel smpeg2-devel libvorbis-devel
+ libflac-devel fluidsynth-devel opusfile-devel"
 short_desc="Multi-channel audio mixer library (SDL 2.x)"
-maintainer="Orphaned <orphan@voidlinux.org>"
+maintainer="Sigrid Solveig Haflinudóttir <sigrid@ftrv.se>"
 license="BSD-3-Clause"
-homepage="http://www.libsdl.org/projects/SDL_mixer/"
-distfiles="http://www.libsdl.org/projects/SDL_mixer/release/${pkgname}-${version}.tar.gz"
-checksum=b4cf5a382c061cd75081cf246c2aa2f9df8db04bdda8dcdc6b6cca55bede2419
+homepage="https://github.com/libsdl-org/SDL_mixer"
+distfiles="${homepage}/releases/download/release-${version}/${pkgname}-${version}.tar.gz"
+checksum=bc5c7b85f297e5f3cb34c99c366a4746922fc41365b15fd78a164dda71a861a3
 
 pre_configure() {
 	sed -e "/CONFIG_FILE_ETC/s|/etc/timidity.cfg|/etc/timidity++/timidity.cfg|" \
 		-e "/DEFAULT_PATH/s|/etc/timidity|/etc/timidity++|" \
 		-e "/DEFAULT_PATH2/s|/usr/local/lib/timidity|/usr/lib/timidity|" \
-		-i timidity/options.h
+		-i src/codecs/timidity/options.h
 }
 
 post_install() {
-	vlicense COPYING.txt COPYING
+	vlicense LICENSE.txt
 }
 
 SDL2_mixer-devel_package() {
@@ -33,6 +36,5 @@ SDL2_mixer-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
-		vmove "usr/lib/*.a"
 	}
 }
